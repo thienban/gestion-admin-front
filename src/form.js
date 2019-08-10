@@ -1,63 +1,58 @@
-import React from "react";
-import { useCreateUserForm } from "./CustomHook";
+import React, { useState } from "react";
+import UserForm from "./forms/user";
+import OrganisationForm from "./forms/organisation";
+import TeamForm from "./forms/team";
 
 const Form = () => {
-  const signup = () => {
-    console.log("ffffffff");
-    alert(`User Created!
-               Name: ${inputs.name}
-               Email: ${inputs.email}
-               Name: ${inputs.organisation}
-               Email: ${inputs.team}
-               `);
+  const [select, setSelected] = useState(null);
+  const selectForm = select => {
+    switch (select) {
+      case "user": 
+        return (
+          <div>
+            <UserForm />
+          </div>
+        );
+      case "organisation":
+        return (
+          <div>
+            <OrganisationForm />
+          </div>
+        );
+      case "team":
+        return (
+          <div>
+            <TeamForm />
+          </div>
+        );
+      default:
+        return null;
+    }
   };
-  const { inputs, handleInputChange, handleSubmit } = useCreateUserForm(
-    { name: "", email: "", organisation: "", team: "" },
-    signup
-  );
   return (
-    <div class="container">
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Name</label>
-        <input
-          type="text"
-          name="name"
-          onChange={handleInputChange}
-          value={inputs.name}
-          required
-        />
-      </div>
-      <div>
-        <label>Email Address</label>
-        <input
-          type="email"
-          name="email"
-          onChange={handleInputChange}
-          value={inputs.email}
-          required
-        />
-      </div>
-      <div>
-        <label>Organisation</label>
-        <input
-          type="text"
-          onChange={handleInputChange}
-          value={inputs.organisation}
-          name="organisation"
-        />
-      </div>
-      <div>
-        <label>Team</label>
-        <input
-          type="text"
-          onChange={handleInputChange}
-          value={inputs.team}
-          name="team"
-        />
-      </div>
-      <button type="submit">Sign Up</button>
-    </form>
+    <div className="container">
+      <button
+        className="button button-outline"
+        name="user"
+        onClick={e => setSelected(e.target.name)}
+      >
+        Create User
+      </button>
+      <button
+        className="button button-outline"
+        name="organisation"
+        onClick={e => setSelected(e.target.name)}
+      >
+        Create Organisation
+      </button>
+      <button
+        className="button button-outline"
+        name="team"
+        onClick={e => setSelected(e.target.name)}
+      >
+        Create Team
+      </button>
+      {selectForm(select)}
     </div>
   );
 };
