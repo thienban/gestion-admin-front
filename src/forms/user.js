@@ -11,13 +11,22 @@ const UserForm = props => {
                    Name: ${inputs.organisation}
                    Email: ${inputs.team}
                    `);
+    fetch("http://localhost:8080/api/user", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      mode: "no-cors",
+      body: JSON.stringify({name: inputs.name})
+    });
   };
 
   const { inputs, handleInputChange, handleSubmit } = useCreateUserForm(
     { name: "", email: "", organisation: "", team: "" },
     signup
   );
-  const data = fetchData("https://jsonplaceholder.typicode.com/photos");
+  const data = fetchData("http://localhost:8080/api/user");
   console.log(data);
   return (
     <div>
@@ -69,7 +78,9 @@ const UserForm = props => {
 
 function NumberList(props) {
   const numbers = props.numbers;
-  const listItems = numbers.map(number => <li key={number.id}>{number.title}</li>);
+  const listItems = numbers.map(number => (
+    <li key={number.id}>{number.name}</li>
+  ));
   return <ul>{listItems}</ul>;
 }
 
