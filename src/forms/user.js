@@ -14,11 +14,10 @@ const UserForm = props => {
     fetch("http://localhost:8080/api/user", {
       method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json"
       },
-      mode: "no-cors",
-      body: JSON.stringify({name: inputs.name})
+      body: JSON.stringify({ name: inputs.name, email: inputs.email })
     });
   };
 
@@ -26,8 +25,11 @@ const UserForm = props => {
     { name: "", email: "", organisation: "", team: "" },
     signup
   );
-  const data = fetchData("http://localhost:8080/api/user");
-  console.log(data);
+  const user = fetchData("http://localhost:8080/api/user");
+  const organisation = fetchData("http://localhost:8080/api/organisation");
+  const team = fetchData("http://localhost:8080/api/team");
+  console.log(organisation);
+  console.log(team);
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -53,25 +55,15 @@ const UserForm = props => {
         </div>
         <div>
           <label>Organisation</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            value={inputs.organisation}
-            name="organisation"
-          />
+          <Select data={organisation}/>
         </div>
         <div>
           <label>Team</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            value={inputs.team}
-            name="team"
-          />
+          <Select data={team}/>
         </div>
         <button type="submit">Create</button>
       </form>
-      {data ? <NumberList numbers={data} /> : null}
+      {user ? <NumberList numbers={user} /> : null}
     </div>
   );
 };
@@ -79,9 +71,25 @@ const UserForm = props => {
 function NumberList(props) {
   const numbers = props.numbers;
   const listItems = numbers.map(number => (
-    <li key={number.id}>{number.name}</li>
+    <li key={number.id}>
+      {number.name}
+      {number.email ? (
+        <ul>
+          <li>{number.email}</li>
+        </ul>
+      ) : null}
+    </li>
   ));
   return <ul>{listItems}</ul>;
+}
+const Select = props => {
+  const listName = props.data;
+  const option = listName ? listName.map( val => (
+      <option value={val.name}>
+        {val.name}
+      </option>
+  )) : null
+  return <select>{option}</select>;
 }
 
 export default UserForm;
