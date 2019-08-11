@@ -3,10 +3,14 @@ import { useCreateUserForm } from "../CustomHook";
 
 const Organisation = props => {
   const signup = () => {
-    console.log("ffffffff");
-    alert(`User Created!
-                   Name: ${inputs.name}
-                   `);
+    fetch("http://localhost:8080/api/organisation", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name: inputs.name })
+    });
   };
 
   const { inputs, handleInputChange, handleSubmit } = useCreateUserForm(
