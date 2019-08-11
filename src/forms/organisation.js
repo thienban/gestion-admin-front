@@ -1,5 +1,7 @@
 import React from "react";
 import { useCreateUserForm } from "../CustomHook";
+import fetchData from "../utils/fetchData";
+import {NumberList} from "./components";
 
 const Organisation = props => {
   const signup = () => {
@@ -17,7 +19,9 @@ const Organisation = props => {
     { name: "" },
     signup
   );
+  const organisation = fetchData("http://localhost:8080/api/organisation");
   return (
+    <div>
     <form onSubmit={handleSubmit}>
       <div>
         <label>Name</label>
@@ -31,6 +35,8 @@ const Organisation = props => {
       </div>
       <button type="submit">Create</button>
     </form>
+    {organisation ? <NumberList numbers={organisation} /> : null}
+    </div>
   );
 };
 
