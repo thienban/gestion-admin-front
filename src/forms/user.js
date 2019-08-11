@@ -20,14 +20,13 @@ const UserForm = props => {
       body: JSON.stringify({ name: inputs.name, email: inputs.email })
     });
   };
-
+  const user = fetchData("http://localhost:8080/api/user");
+  const organisation = fetchData("http://localhost:8080/api/organisation");
+  const team = fetchData("http://localhost:8080/api/team");
   const { inputs, handleInputChange, handleSubmit } = useCreateUserForm(
     { name: "", email: "", organisation: "", team: "" },
     signup
   );
-  const user = fetchData("http://localhost:8080/api/user");
-  const organisation = fetchData("http://localhost:8080/api/organisation");
-  const team = fetchData("http://localhost:8080/api/team");
   console.log(organisation);
   console.log(team);
   return (
@@ -55,11 +54,18 @@ const UserForm = props => {
         </div>
         <div>
           <label>Organisation</label>
-          <Select data={organisation}/>
+          <Select
+            name="organisation"
+            data={organisation}
+            onSelect={handleInputChange}
+          />
         </div>
         <div>
           <label>Team</label>
-          <Select data={team}/>
+          <Select 
+          name="team" 
+          data={team}
+          onSelect={handleInputChange} />
         </div>
         <button type="submit">Create</button>
       </form>
@@ -71,7 +77,7 @@ const UserForm = props => {
 function NumberList(props) {
   const numbers = props.numbers;
   const listItems = numbers.map(number => (
-    <li key={number.id}>
+    <li key={number["_id"]}>
       {number.name}
       {number.email ? (
         <ul>
@@ -84,12 +90,18 @@ function NumberList(props) {
 }
 const Select = props => {
   const listName = props.data;
-  const option = listName ? listName.map( val => (
-      <option value={val.name}>
-        {val.name}
-      </option>
-  )) : null
-  return <select>{option}</select>;
-}
+  const option = listName
+    ? listName.map(val => (
+        <option key={val["_id"]} value={val["_id"]}>
+          {val.name}
+        </option>
+      ))
+    : null;
+  return (
+    <select name={props.name} onChange={props.onSelect}>
+      {option}
+    </select>
+  );
+};
 
 export default UserForm;
