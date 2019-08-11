@@ -99,6 +99,7 @@ const Select = props => {
     : null;
   return (
     <select name={props.name} onChange={props.onSelect}>
+      <option>{""}</option>
       {option}
     </select>
   );
